@@ -2,9 +2,9 @@
 
 console.log('App start!');
 
-const jsdom = require('jsdom').jsdom;
+/*const jsdom = require('jsdom').jsdom;
 global.document  = jsdom();
-global.window = document.defaultView;
+global.window = document.defaultView;*/
 
 const fs = require('fs'),
       Twitter = require('twitter'),
