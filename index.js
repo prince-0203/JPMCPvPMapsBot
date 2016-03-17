@@ -7,12 +7,11 @@ global.document  = jsdom();
 global.window = document.defaultView;
 
 const fs = require('fs'),
-      vm = require('vm'),
       Twitter = require('twitter'),
       request = require('request'),
       Canvas = require('canvas'),
-      $ = require('jquery'),
-      jCanvas = require('./jcanvas.min.js')/*,
+      //$ = require('jquery'),
+      //jCanvas = require('./jcanvas.min.js')/*,
       svg2png = require('svg2png')*/;
 
 const client = new Twitter({
@@ -56,7 +55,7 @@ const execCommand = (args, callback) => {
         request(`http://maps.minecraft.jp/production/rotations/${args[2]}.txt`, function (err, res, body) {
           if (!err && res.statusCode === 200) {
             const canvas = new Canvas(400, 400);
-            const image = $(canvas)
+            /*const image = $(canvas)
               .drawText({
                 fillStyle: '#9cf',
                 strokeStyle: '#25a',
@@ -66,8 +65,13 @@ const execCommand = (args, callback) => {
                 fontFamily: 'Verdana, sans-serif',
                 text: 'Hello'
               })
-              .getCanvasImage('jpeg');
-            fs.readFile(image, (err, data) => {
+              .getCanvasImage('jpeg');*/
+            var ctx = canvas.getContext('2d');
+            ctx.font = '30px Impact';
+            ctx.rotate(0.1);
+            ctx.fillText("Hello World!", 50, 100);
+
+            fs.readFile(canvas.toDataURL(), (err, data) => {
               if(err) {
                 console.error(err);
                 callback('内部エラー: 画像を生成できませんでした。');
