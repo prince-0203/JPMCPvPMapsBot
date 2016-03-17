@@ -57,6 +57,7 @@ jsdom.env('', function ( err, window ) {
           callback('このコマンドは管理者のみ使用可能です。');
         } else {
           callback('Botを終了します…', () => {
+            console.log('Exiting...');
             process.exit();
           });
         }
