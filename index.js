@@ -54,7 +54,7 @@ const execCommand = (args, callback) => {
       } else {
         request(`http://maps.minecraft.jp/production/rotations/${args[2]}.txt`, function (err, res, body) {
           if (!err && res.statusCode === 200) {
-            /*const image = $('<canvas>')
+            const image = $('<canvas width="400" height="300">')
               .drawText({
                 fillStyle: '#9cf',
                 strokeStyle: '#25a',
@@ -64,13 +64,9 @@ const execCommand = (args, callback) => {
                 fontFamily: 'Verdana, sans-serif',
                 text: 'Hello'
               })
-              .getCanvasImage('jpeg');*/
-            var ctx = canvas.getContext('2d');
-            ctx.font = '30px Impact';
-            ctx.rotate(0.1);
-            ctx.fillText("Hello World!", 50, 100);
+              .getCanvasImage('jpeg');
 
-            callback(args[2] + 'のローテーションです。', new Buffer(canvas.toDataURL().match(/^data:.+\/(.+);base64,(.*)$/)[2], 'base64'));
+            callback(args[2] + 'のローテーションです。', new Buffer(image.match(/^data:.+\/(.+);base64,(.*)$/)[2], 'base64'));
             /*svg
               .append('<rect>')
               .children('rect')
