@@ -9,10 +9,10 @@ global.window = document.defaultView;
 const fs = require('fs'),
       Twitter = require('twitter'),
       request = require('request'),
-      Canvas = require('canvas'),
+      Canvas = require('canvas')//,
       //$ = require('jquery'),
-      //jCanvas = require('./jcanvas.min.js')/*,
-      svg2png = require('svg2png')*/;
+      //jCanvas = require('./jcanvas.min.js'),
+      /*svg2png = require('svg2png')*/;
 
 const client = new Twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
