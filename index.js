@@ -71,7 +71,7 @@ const execCommand = (args, callback) => {
             ctx.rotate(0.1);
             ctx.fillText("Hello World!", 50, 100);
 
-            callback(args[2] + 'のローテーションです。', new Buffer(canvas.toDataURL(), 'base64'));
+            callback(args[2] + 'のローテーションです。', new Buffer(canvas.toDataURL().match(/^data:.+\/(.+);base64,(.*)$/)[2], 'base64'));
             /*svg
               .append('<rect>')
               .children('rect')
