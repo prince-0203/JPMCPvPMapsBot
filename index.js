@@ -2,17 +2,17 @@
 
 console.log('App start!');
 
-/*const jsdom = require('jsdom').jsdom;
-global.document  = jsdom();
-global.window = document.defaultView;*/
+const jsdom = require('jsdom').jsdom;
+global.document = jsdom();
+global.window = document.defaultView;
 
 const fs = require('fs'),
       Twitter = require('twitter'),
       request = require('request'),
-      Canvas = require('canvas')//,
-      //$ = require('jquery'),
-      //jCanvas = require('./jcanvas.min.js'),
-      /*svg2png = require('svg2png')*/;
+      Canvas = require('canvas'),
+      $ = require('jquery'),
+      jCanvas = require('./jcanvas.min.js')/*,
+      svg2png = require('svg2png')*/;
 
 const client = new Twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -54,8 +54,7 @@ const execCommand = (args, callback) => {
       } else {
         request(`http://maps.minecraft.jp/production/rotations/${args[2]}.txt`, function (err, res, body) {
           if (!err && res.statusCode === 200) {
-            const canvas = new Canvas(400, 400);
-            /*const image = $(canvas)
+            /*const image = $('<canvas>')
               .drawText({
                 fillStyle: '#9cf',
                 strokeStyle: '#25a',
