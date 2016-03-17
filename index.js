@@ -32,7 +32,7 @@ const botScreenName = 'JPMCPvPMapsBot';
     height: 400,
   });*/
 
-const execCommand = (args, callback) => {
+const execCommand = (args, isAdmin, callback) => {
   console.log('Received: ' + args);
 
   if(args[0] !== '@' + botScreenName) {
@@ -45,6 +45,16 @@ const execCommand = (args, callback) => {
     // 生存確認
     case 'おーい':
       callback('Botは稼働中です!');
+      return;
+    // 終了
+    case 'exit':
+      if(!isAdmin) {
+        callback('このコマンドは管理者のみ使用可能です。');
+      } else {
+        callback('Botを終了します…', () => {
+          process.exit();
+        });
+      }
       return;
     // ローテーション確認
     case 'rotation':
@@ -129,7 +139,7 @@ client.stream('user', { with: 'user' }, stream => {
     }
 
     // 引数に分割してコマンドを実行
-    execCommand(tweet.text.split(' '), (text, mediaBuf) => {
+    execCommand(tweet.text.split(' '), tweet.user.id_str === '4637307672', (text, mediaBuf, callback) => {
       if(text) {
         var mediaIdString;
         if(mediaBuf) {
@@ -137,7 +147,7 @@ client.stream('user', { with: 'user' }, stream => {
           client.post('media/upload', { media: mediaBuf }, function(err, media){
             if (err) {
               console.error(err);
-              text = "エラー: Twitterに画像をアップロードできませんでした。";
+              text = 'エラー: Twitterに画像をアップロードできませんでした。';
               mediaIdString = undefined;
             } else {
               mediaIdString = media.media_id_string;
@@ -165,10 +175,15 @@ client.stream('user', { with: 'user' }, stream => {
             if (err) {
               console.error(err);
             } else {
-              console.log('Replied : ' + text);
+              console.log('Replied: ' + text);
             }
           });
         }
+      }
+
+      // 管理コマンド送信時など…
+      if(callback) {
+        callback();
       }
     });
   });
