@@ -71,14 +71,7 @@ const execCommand = (args, callback) => {
             ctx.rotate(0.1);
             ctx.fillText("Hello World!", 50, 100);
 
-            fs.readFile(canvas.toDataURL(), (err, data) => {
-              if(err) {
-                console.error(err);
-                callback('内部エラー: 画像を生成できませんでした。');
-              } else {
-                callback(args[2] + 'のローテーションです。', data);
-              }
-            });
+            callback(args[2] + 'のローテーションです。', new Buffer(canvas.toDataURL(), 'base64'));
             /*svg
               .append('<rect>')
               .children('rect')
