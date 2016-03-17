@@ -11,7 +11,7 @@ const fs = require('fs'),
       request = require('request'),
       Canvas = require('canvas'),
       $ = require('jquery'),
-      jCanvas = require('./jcanvas.min.js')/*,
+      jCanvas = require('jcanvas')/*,
       svg2png = require('svg2png')*/;
 
 const client = new Twitter({
