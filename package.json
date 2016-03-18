@@ -1,16 +1,21 @@
 {
   "name": "jpmcpvp-maps-bot",
   "version": "1.0.0",
+  "description": "JPMCPvP Maps Bot",
+  "author": "prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)",
   "private": true,
-  "description": "JPMCPvP Masp Bot",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://git.heroku.com/jpmcpvp-map-bot-1.git"
+    "url": "git+https://github.com/prince-0203/JPMCPvPMapsBot.git"
   },
+  "bugs": {
+    "url": "https://github.com/prince-0203/JPMCPvPMapsBot/issues"
+  },
+  "homepage": "https://github.com/prince-0203/JPMCPvPMapsBot#readme",
   "engines": {
     "node": "^4.4.0",
     "npm": "^3.8.2"

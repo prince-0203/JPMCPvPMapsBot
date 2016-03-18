@@ -1,5 +1,5 @@
-JPMCPvP Maps Bot
-# Run
+# JPMCPvP Maps Bot
+## Run
 1. [Twitter Application Management](https://apps.twitter.com/)でアプリケーションを作成し、環境変数に以下の値を設定します。
 | 変数名                       | 値                            |
 |-----------------------------|------------------------------|
