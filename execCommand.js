@@ -20,30 +20,32 @@ module.exports = (botInfo) => {
   return (args, isAdmin, callback) => {
     if(args[0] !== '@' + botInfo.screenName) {
       // 引数一つ目が'@JPMCPvPMapsBot'でなかった(コマンドでなかった)
-      return callback(null);
+      callback(null);
+      return;
     }
     console.log('Received: ' + args);
 
     switch(args[1]) {
       // 生存確認
       case 'おーい':
-        return callback('Botは稼働中です!');
+        callback('Botは稼働中です!');
+        return;
       // 終了
       case 'exit':
         if(!isAdmin) {
-          return callback('エラー: このコマンドは管理者のみ使用可能です。');
+          callback('エラー: このコマンドは管理者のみ使用可能です。');
         } else {
-          return callback('Botを終了します…', null, () => {
+          callback('Botを終了します…', null, () => {
             console.log('Exiting...');
             process.exit();
           });
         }
-        break;
+        return;
       // ローテーション確認
       case 'rotation':
       case 'r':
         if(!args[2]) {
-          return callback('エラー: サーバー名を指定してください。');
+          callback('エラー: サーバー名を指定してください。');
         } else {
           request({
             uri : `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
@@ -73,9 +75,9 @@ module.exports = (botInfo) => {
                 return draw.svg();
               }, body, (png) => {
                 if(!png) {
-                  return callback('内部エラー: 画像を生成できませんでした。');
+                  callback('内部エラー: 画像を生成できませんでした。');
                 } else {
-                  return callback(args[2] + 'のローテーションです。', png);
+                  callback(args[2] + 'のローテーションです。', png);
                 }
               });
               /*phantom.create().then((ph) => {
@@ -126,14 +128,15 @@ module.exports = (botInfo) => {
                 });
               });*/
             } else {
-              return callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
+              callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
             }
           });
         }
-        break;
+        return;
       // コマンドが存在しない
       default:
-        return callback('エラー: コマンドが見つかりませんでした。');
+        callback('エラー: コマンドが見つかりませんでした。');
+        return;
     }
   };
 };
