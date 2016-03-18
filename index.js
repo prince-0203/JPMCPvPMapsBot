@@ -1,13 +1,15 @@
 /* jshint esversion:2015 */
 
-const LOG = console.log;
-const ERROR = console.error;
+/**
+ * JPMCPvP Maps Bot
+ *  Author: prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)
+ *
+ * TODO: Rate Limit Magagerの実装
+ */
 
-LOG('App starts!');
+console.log('App starts!');
 
-const Twitter = require('twitter'),
-      request = require('request'),
-      phantom = require('phantom');
+const Twitter = require('twitter');
 
 const client = new Twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -16,103 +18,12 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 });
 
-const botId = '710259769970286592';
-const botScreenName = 'JPMCPvPMapsBot';
-
-const execCommand = (args, isAdmin, callback) => {
-  if(args[0] !== '@' + botScreenName) {
-    // 引数一つ目が'@JPMCPvPMapsBot'でなかった(コマンドでなかった)
-    callback(null);
-    return;
-  }
-  LOG('Received: ' + args);
-
-  switch(args[1]) {
-    // 生存確認
-    case 'おーい':
-      callback('Botは稼働中です!');
-      return;
-    // 終了
-    case 'exit':
-      if(!isAdmin) {
-        callback('エラー: このコマンドは管理者のみ使用可能です。');
-      } else {
-        callback('Botを終了します…', null, () => {
-          LOG('Exiting...');
-          process.exit();
-        });
-      }
-      return;
-    // ローテーション確認
-    case 'rotation':
-    case 'r':
-      if(!args[2]) {
-        callback('エラー: サーバー名を指定してください。');
-      } else {
-        request({
-          uri : `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
-          timeout: 5000
-        }, (err, res, body) => {
-          if (!err && res.statusCode === 200) {
-            phantom.create().then((ph) => {
-              ph.createPage().then((page) => {
-                // とりあえずHTML上でSVGを操作
-                page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then((status) => {
-                  if(status === 'success') {
-                    page.injectJs('./svg.js').then(() => {
-                      // SVG操作
-                      page.evaluate(function(rotation) {
-                        // この中ではES5のコードしか動作しない
-                        var draw = SVG('drawing').size(400, 300);
-
-                        // 背景
-                        draw
-                          .rect('100%', '100%')
-                          .attr('fill', 'white');
-
-                        // テキスト
-                        var rotationText = draw
-                          .text(rotation)
-                          .attr({
-                            x: 0,
-                            y: 20,
-                            fill: 'black'
-                          });
-                        rotationText.attr('y', 20 - rotationText.bbox().y);
-                        var textBBox = rotationText.bbox();
-                        draw.size(textBBox.width, textBBox.height);
-
-                        return 'data:image/svg+xml,' + draw.svg();
-                      }, body).then((svg) => {
-                        // SVGを開いてJPEG書き出し
-                        page.open(svg).then(() => {
-                          page.renderBase64('PNG').then((image) => {
-                            ph.exit();
-                            callback(args[2] + 'のローテーションです。', new Buffer(image, 'base64'));
-                          });
-                        });
-                      });
-                    });
-                  } else {
-                    ERROR(err);
-                    ph.exit();
-                    callback('内部エラー: 画像を生成できませんでした。');
-                  }
-                });
-              });
-            });
-          } else {
-            callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
-          }
-        });
-      }
-      return;
-    // コマンドが存在しない
-    default:
-      callback('エラー: コマンドが見つかりませんでした。');
-      return;
-  }
+const botInfo = {
+  id: process.env.BOT_ID,
+  screenName: process.env.BOT_SCREEN_NAME
 };
+
+const execCommand = require('./execCommand.js')(botInfo);
 
 client.stream('user', { with: 'user' }, stream => {
   // データ受信
@@ -132,7 +43,7 @@ client.stream('user', { with: 'user' }, stream => {
           // mediaをアップロードする場合
           client.post('media/upload', { media: mediaBuf }, function(err, media){
             if (err) {
-              ERROR(err);
+              console.error(err);
               text = '内部エラー: Twitterに画像をアップロードできませんでした。';
               mediaIdString = undefined;
             } else {
@@ -146,9 +57,9 @@ client.stream('user', { with: 'user' }, stream => {
               media_ids: mediaIdString
             }, (err) =>{
               if (err) {
-                ERROR(err);
+                console.error(err);
               } else {
-                LOG('Replied with media: ' + text);
+                console.log('Replied with media: ' + text);
               }
 
               // 管理コマンド送信時など…
@@ -164,9 +75,9 @@ client.stream('user', { with: 'user' }, stream => {
             in_reply_to_status_id: tweet.id_str,
           }, (err) =>{
             if (err) {
-              ERROR(err);
+              console.error(err);
             } else {
-              LOG('Replied: ' + text);
+              console.log('Replied: ' + text);
             }
 
             if(callback) {
