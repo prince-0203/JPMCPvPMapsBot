@@ -69,7 +69,7 @@ client.stream('user', { with: 'user' }, stream => {
           });
         } else {
           // テキストのみのリプライ送信
-          reply(text, null, () => {
+          reply(text, undefined, () => {
             if(callback) {
               return callback();
             }
