@@ -70,7 +70,7 @@ client.stream('user', { with: 'user' }, stream => {
           // リプライ送信
           client.post('statuses/update', {
             status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
-            in_reply_to_status_id: tweet.id_str,
+            in_reply_to_status_id: tweet.id_str
           }, (err) =>{
             if (err) {
               console.error(err);
