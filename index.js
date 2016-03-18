@@ -3,8 +3,6 @@
 /**
  * JPMCPvP Maps Bot
  *  Author: prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)
- *
- * TODO: Rate Limit Magagerの実装
  */
 
 console.log('App starts!');
