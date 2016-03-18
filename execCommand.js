@@ -45,7 +45,7 @@ module.exports = (botInfo) => {
           return callback('エラー: サーバー名を指定してください。');
         } else {
           request({
-            uri : `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
+            uri: `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
             timeout: 5000
           }, (err, res, body) => {
             if (!err && res.statusCode === 200) {
