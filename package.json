@@ -9,7 +9,8 @@
     "url": "https://git.heroku.com/jpmcpvp-map-bot-1.git"
   },
   "engines": {
-    "node": "^4.4.0"
+    "node": "^4.4.0",
+    "npm": "^3.7.0"
   },
   "author": "prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)",
   "dependencies": {
