@@ -34,8 +34,7 @@ module.exports = (botInfo) => {
           return callback('エラー: このコマンドは管理者のみ使用可能です。');
         } else {
           return callback('Botを終了します…', null, () => {
-            console.log('Exiting...');
-            process.exit();
+            throw new Error('Received exit command.');
           });
         }
         break;
