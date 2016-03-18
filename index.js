@@ -42,7 +42,7 @@ client.stream('user', { with: 'user' }, stream => {
         if (err) {
           console.error(err);
         } else {
-          console.log(`Replied ${media ? 'with media' : ''}: ` + text);
+          console.log(`Replied ${typeof(media) !== 'undefined' ? 'with media' : ''}: ` + text);
         }
 
         return callback();
