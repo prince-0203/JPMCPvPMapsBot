@@ -33,53 +33,45 @@ client.stream('user', { with: 'user' }, stream => {
       return;
     }
 
+    const reply = (text, mediaIds, callback) => {
+      client.post('statuses/update', {
+        status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
+        in_reply_to_status_id: tweet.id_str,
+        media_ids: mediaIds
+      }, (err) =>{
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(`Replied ${media ? 'with media' : ''}: ` + text);
+        }
+
+        return callback();
+      });
+    };
+
     // 引数に分割してコマンドを実行
     execCommand(tweet.text.split(' '), tweet.user.id_str === '4637307672', (text, mediaBuf, callback) => {
       if(text) {
-        var mediaIdString;
         if(mediaBuf) {
           // mediaをアップロードする場合
           client.post('media/upload', { media: mediaBuf }, function(err, media){
             if (err) {
               console.error(err);
               text = '内部エラー: Twitterに画像をアップロードできませんでした。';
-              mediaIdString = undefined;
             } else {
-              mediaIdString = media.media_id_string;
+              const mediaIdString = media.media_id_string;
             }
-
-            // リプライ送信
-            client.post('statuses/update', {
-              status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
-              in_reply_to_status_id: tweet.id_str,
-              media_ids: mediaIdString
-            }, (err) =>{
-              if (err) {
-                console.error(err);
-              } else {
-                console.log('Replied with media: ' + text);
-              }
-
-              // 管理コマンド送信時など…
+            reply(text, mediaIdString, () => {
               if(callback) {
-                callback();
+                return callback();
               }
             });
           });
         } else {
-          // リプライ送信
-          client.post('statuses/update', {
-            status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
-            in_reply_to_status_id: tweet.id_str
-          }, (err) =>{
-            if (err) {
-              console.error(err);
-            } else {
-              console.log('Replied: ' + text);
-            }
-
+          // テキストのみのリプライ送信
+          reply(text, null, () => {
             if(callback) {
-              callback();
+              return callback();
             }
           });
         }
