@@ -53,11 +53,12 @@ client.stream('user', { with: 'user', stringify_friend_ids: true }, stream => {
         if(mediaBuf) {
           // mediaをアップロードする場合
           client.post('media/upload', { media: mediaBuf }, function(err, media){
+            var mediaIdString;
             if (err) {
               console.error(err);
               text = '内部エラー: Twitterに画像をアップロードできませんでした。';
             } else {
-              const mediaIdString = media.media_id_string;
+              mediaIdString = media.media_id_string;
             }
             reply(text, mediaIdString, () => {
               if(callback) {
