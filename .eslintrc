@@ -1,18 +1,18 @@
 ecmaFeatures:
-  modules: true
-  jsx: true
+  modules: false
+  jsx: false
 
 env:
-  amd: true
-  browser: true
+  amd: false
+  browser: false
   es6: true
-  jquery: true
+  jquery: false
   node: true
 
 # http://eslint.org/docs/rules/
 rules:
   # Possible Errors
-  comma-dangle: [2, never]
+  comma-dangle: [1, never]
   no-cond-assign: 2
   no-console: 0
   no-constant-condition: 2
@@ -103,16 +103,16 @@ rules:
 
   # Variables
   init-declarations: 0
-  no-catch-shadow: 2
+  no-catch-shadow: 0 # IE8なんて関係ない
   no-delete-var: 2
   no-label-var: 2
   no-shadow-restricted-names: 2
-  no-shadow: 0
+  no-shadow: 2
   no-undef-init: 2
   no-undef: 0
-  no-undefined: 0
-  no-unused-vars: 0
-  no-use-before-define: 0
+  no-undefined: 2
+  no-unused-vars: 1
+  no-use-before-define: 2
 
   # Node.js and CommonJS
   callback-return: 2
@@ -120,8 +120,8 @@ rules:
   handle-callback-err: 2
   no-mixed-requires: 0
   no-new-require: 0
-  no-path-concat: 2
-  no-process-exit: 2
+  no-path-concat: 1
+  no-process-exit: 0
   no-restricted-modules: 0
   no-sync: 0
 
