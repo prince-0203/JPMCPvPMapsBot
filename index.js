@@ -23,7 +23,7 @@ const botInfo = {
 
 const execCommand = require('./execCommand.js')(botInfo);
 
-client.stream('user', { with: 'user' }, stream => {
+client.stream('user', { with: 'user', stringify_friend_ids: true }, stream => {
   // データ受信
   stream.on('data', (tweet) => {
     const start = new Date();
