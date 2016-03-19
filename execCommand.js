@@ -77,53 +77,6 @@ module.exports = (botInfo) => {
                   return callback(args[2] + 'のローテーションです。', png);
                 }
               });
-              /*phantom.create().then((ph) => {
-                ph.createPage().then((page) => {
-                  // とりあえずHTML上でSVGを操作
-                  page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then((status) => {
-                    if(status === 'success') {
-                      page.injectJs('./svg.js').then(() => {
-                        // SVG操作
-                        page.evaluate(function(rotation) {
-                          // この中ではES5のコードしか動作しない
-                          var draw = SVG('drawing').size(400, 300);
-
-                          // 背景
-                          draw
-                            .rect('100%', '100%')
-                            .attr('fill', 'white');
-
-                          // テキスト
-                          var rotationText = draw
-                            .text(rotation)
-                            .attr({
-                              x: 0,
-                              y: 20,
-                              fill: 'black'
-                            });
-                          rotationText.attr('y', 20 - rotationText.bbox().y);
-                          var textBBox = rotationText.bbox();
-                          draw.size(textBBox.width, textBBox.height);
-
-                          return 'data:image/svg+xml,' + draw.svg();
-                        }, body).then((svg) => {
-                          // SVGを開いてJPEG書き出し
-                          page.open(svg).then(() => {
-                            page.renderBase64('PNG').then((image) => {
-                              ph.exit();
-                              callback(args[2] + 'のローテーションです。', new Buffer(image, 'base64'));
-                            });
-                          });
-                        });
-                      });
-                    } else {
-                      console.error(err);
-                      ph.exit();
-                      callback('内部エラー: 画像を生成できませんでした。');
-                    }
-                  });
-                });
-              });*/
             } else {
               return callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
             }
