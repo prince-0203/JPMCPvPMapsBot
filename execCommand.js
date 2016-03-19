@@ -1,5 +1,3 @@
-/* jshint esversion: 2015 */
-
 /**
  * execCommand Module
  *  注意: require時にBotの情報を指定する。例: require('./execCommand.js')({ id: '0000000', screenName: 'JPMCPvPMapsBot' })

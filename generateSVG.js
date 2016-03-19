@@ -1,5 +1,3 @@
-/* jshint esversion: 2015 */
-
 /**
  * generateSVG Module
  *  generateSVG(evalFunction, arg, callback)

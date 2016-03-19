@@ -1,5 +1,3 @@
-/* jshint esversion:2015 */
-
 /**
  * JPMCPvP Maps Bot
  *  Author: prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)
