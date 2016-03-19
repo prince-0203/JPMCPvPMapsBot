@@ -35,7 +35,6 @@ module.exports = (botInfo) => {
             throw new Error('Received exit command.');
           });
         }
-        break;
       // ローテーション確認
       case 'rotation':
       case 'r':
