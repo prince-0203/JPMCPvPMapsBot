@@ -13,7 +13,7 @@ const phantom = require('phantom');
 module.exports = (evalFunction, arg, callback) => {
   phantom.create().then((ph) => {
     ph.createPage().then((page) => {
-      page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then((status) => {
+      page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then(() => {
         page.injectJs('./svg.js').then(() => {
           // SVG操作
           page.evaluate(evalFunction, arg).then((svg) => {
