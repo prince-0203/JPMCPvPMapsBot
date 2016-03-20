@@ -3,6 +3,8 @@
  *  Author: prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)
  */
 
+require('./OpenShiftServer')();
+
 console.log('App starts!');
 
 const Twitter = require('twitter');
