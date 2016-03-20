@@ -5,6 +5,9 @@
   "author": "prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)",
   "private": true,
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prince-0203/JPMCPvPMapsBot.git"
