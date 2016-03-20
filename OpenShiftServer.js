@@ -15,6 +15,4 @@ module.exports = () => {
   }
 
   http.createServer((req, res) => { res.end(); }).listen(port, ipAddress);
-  
-  console.log(`Server running at http://${ipAddress}:${port}/`);
 };
