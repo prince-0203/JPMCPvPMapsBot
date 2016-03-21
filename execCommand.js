@@ -11,8 +11,11 @@
  *     callback: ツイートが送信された(あるいは送信に失敗した)ときに呼ぶ関数。管理用コマンドのexitでのみ使用される。関数がない場合はnullまたはundefinedが渡される。
  */
 
-const request = require('request'),
-      generateSVG = require('./generateSVG.js');
+const command = {
+  /* eslint global-require: 0 */
+  exit: require('./command/exit'),
+  rotation: require('./command/rotation')
+};
 
 module.exports = (botInfo) => (args, isAdmin, callback) => {
   if(args[0] !== '@' + botInfo.screenName) {
@@ -27,56 +30,11 @@ module.exports = (botInfo) => (args, isAdmin, callback) => {
       return callback('Botは稼働中です!');
     // 終了
     case 'exit':
-      if(!isAdmin) {
-        return callback('エラー: このコマンドは管理者のみ使用可能です。');
-      } else {
-        return callback('Botを終了します…', null, () =>  { process.exit(); });
-      }
+      return command.exit(args, callback);
     // ローテーション確認
     case 'rotation':
     case 'r':
-      if(!args[2]) {
-        return callback('エラー: サーバー名を指定してください。');
-      } else {
-        request({
-          uri: `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
-          timeout: 5000
-        }, (err, res, body) => {
-          if (!err && res.statusCode === 200) {
-            generateSVG(function(rotation) {
-              var draw = SVG('drawing');
-
-              // 背景
-              draw
-                .rect('100%', '100%')
-                .attr('fill', 'white');
-
-              // テキスト
-              var rotationText = draw
-                .text(rotation)
-                .attr({
-                  x: 0,
-                  y: 20,
-                  fill: 'black'
-                });
-              rotationText.attr('y', 20 - rotationText.bbox().y);
-              var textBBox = rotationText.bbox();
-              draw.size(textBBox.width, textBBox.height);
-
-              return [draw.svg(), { width: draw.width(), height: draw.height() }];
-            }, body, (png) => {
-              if(!png) {
-                return callback('内部エラー: 画像を生成できませんでした。');
-              } else {
-                return callback(args[2] + 'のローテーションです。', png);
-              }
-            });
-          } else {
-            return callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
-          }
-        });
-      }
-      break;
+      return command.rotation(args, callback);
     // コマンドが存在しない
     default:
       return callback('エラー: コマンドが見つかりませんでした。');
