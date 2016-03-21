@@ -28,8 +28,8 @@ client.stream('user', { with: 'user', stringify_friend_ids: true }, stream => {
   stream.on('data', (tweet) => {
     const start = new Date();
 
-    if(tweet.friends) {
-      // フォローしてるユーザー一覧が返ってきた
+    if(tweet.friends_str || tweet.event || tweet.warning) {
+      // ツイート以外が渡された
       return;
     }
 
