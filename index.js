@@ -58,7 +58,7 @@ if(process.env.LOCAL_DEBUG === "1") {
         client.post('statuses/update', {
           status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
           in_reply_to_status_id: tweet.id_str,
-          media_ids: mediaIds
+          media_ids: mediaIds ? mediaIds : undefined
         }, (err) =>{
           if (err) {
             console.error(err);
@@ -91,7 +91,7 @@ if(process.env.LOCAL_DEBUG === "1") {
             });
           } else {
             // テキストのみのリプライ送信
-            reply(text, undefined, () => {
+            reply(text, null, () => {
               if(callback) {
                 return callback();
               }
