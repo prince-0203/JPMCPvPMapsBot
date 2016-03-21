@@ -18,7 +18,7 @@
   "homepage": "https://github.com/prince-0203/JPMCPvPMapsBot#readme",
   "engines": {
     "node": "^4.4.0",
-    "npm": "^3.8.2"
+    "npm": "^2.0.15"
   },
   "dependencies": {
     "phantom": "^2.0.8",
