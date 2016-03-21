@@ -30,9 +30,7 @@ module.exports = (botInfo) => (args, isAdmin, callback) => {
       if(!isAdmin) {
         return callback('エラー: このコマンドは管理者のみ使用可能です。');
       } else {
-        return callback('Botを終了します…', null, () => {
-          throw new Error('Received exit command.');
-        });
+        return callback('Botを終了します…', null, () =>  { process.exit(); });
       }
     // ローテーション確認
     case 'rotation':
@@ -46,7 +44,7 @@ module.exports = (botInfo) => (args, isAdmin, callback) => {
         }, (err, res, body) => {
           if (!err && res.statusCode === 200) {
             generateSVG(function(rotation) {
-              var draw = SVG('drawing').size(400, 300);
+              var draw = SVG('drawing');
 
               // 背景
               draw
@@ -65,7 +63,7 @@ module.exports = (botInfo) => (args, isAdmin, callback) => {
               var textBBox = rotationText.bbox();
               draw.size(textBBox.width, textBBox.height);
 
-              return draw.svg();
+              return [draw.svg(), { width: draw.width(), height: draw.height() }];
             }, body, (png) => {
               if(!png) {
                 return callback('内部エラー: 画像を生成できませんでした。');

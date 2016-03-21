@@ -20,7 +20,6 @@
     "node": "^4.4.0",
     "npm": "^3.8.2"
   },
-  "author": "prince <mc.prince.0203@gmail.com> (https://github.com/prince-0203)",
   "dependencies": {
     "phantom": "^2.0.8",
     "request": "^2.69.0",

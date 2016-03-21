@@ -21,5 +21,4 @@ ratings:
   - "**.php"
   - "**.py"
   - "**.rb"
-exclude_paths:
-  - "svg.js"
+exclude_paths: []

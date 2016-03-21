@@ -15,27 +15,15 @@ module.exports = (evalFunction, arg, callback) => {
     ph.createPage().then((page) => {
       page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then(() => {
         page.injectJs('./svg.js').then(() => {
-          // SVG操作
-          page.evaluate(evalFunction, arg).then((svg) => {
-            // SVGを開いてPNG書き出し
-            page.open('data:image/svg+xml,' + svg).then(() => {
-              page.renderBase64('PNG').then((pngBase64) => {
-                ph.exit();
-                callback(new Buffer(pngBase64, 'base64'));
-              }).catch((err) => {
-                console.error(err);
-                ph.exit();
-                callback(null);
+          page.evaluate(evalFunction, arg).then((data) => {
+            page.open('data:image/svg+xml,' + data[0]).then(() => {
+              page.property('viewportSize', data[1]).then(() => {
+                page.renderBase64('PNG').then((pngBase64) => {
+                  ph.exit();
+                  callback(new Buffer(pngBase64, 'base64'));
+                });
               });
-            }).catch((err) => {
-              console.error(err);
-              ph.exit();
-              callback(null);
             });
-          }).catch((err) => {
-            console.error(err);
-            ph.exit();
-            callback(null);
           });
         });
       });
