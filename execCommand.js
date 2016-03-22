@@ -24,6 +24,8 @@ module.exports = (botInfo) => (args, isAdmin, callback) => {
   }
   console.log('Received: ' + args);
 
+  args[1] = args[1].toLowerCase();
+
   switch(args[1]) {
     // 生存確認
     case 'おーい':
