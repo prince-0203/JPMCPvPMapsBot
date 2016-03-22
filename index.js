@@ -24,7 +24,7 @@ if(process.env.LOCAL_DEBUG === "1") {
     input: process.stdin,
     output: process.stdout
   }).on('line', function (line) {
-    execCommand(('@JPMCPvPMapsBot ' + line).split(' '), true, (text, mediaBuf, callback) => {
+    execCommand(('@JPMCPvPMapsBot ' + line).split(' '), null, null, true, (text, mediaBuf, callback) => {
       console.log('Result: ' + text);
       if(mediaBuf) {
         fs.writeFile('temp.png', mediaBuf);
@@ -76,7 +76,7 @@ if(process.env.LOCAL_DEBUG === "1") {
       };
 
       // 引数に分割してコマンドを実行
-      execCommand(tweet.text.split(' '), tweet.user.id_str === '4637307672', (text, mediaBuf, callback) => {
+      execCommand(tweet.text.split(' '), client, tweet, tweet.user.id_str === '4637307672', (text, mediaBuf, callback) => {
         if(text) {
           if(mediaBuf) {
             // mediaをアップロードする場合
