@@ -6,7 +6,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "forever -m 5 -l \"../../logs/forever.log\" -a index.js"
   },
   "repository": {
     "type": "git",
