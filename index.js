@@ -49,6 +49,11 @@ if(process.env.LOCAL_DEBUG === "1") {
     stream.on('data', (tweet) => {
       const start = new Date();
 
+      if(tweet.user.id_str === botInfo.id) {
+        // 無限ループこわい
+        return;
+      }
+
       if(tweet.friends_str || tweet.event || tweet.warning) {
         // ツイート以外が渡された
         return;
