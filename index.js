@@ -18,7 +18,6 @@ const botInfo = {
 const execCommand = require('./execCommand.js')(botInfo);
 
 if(process.env.LOCAL_DEBUG === '1') {
-  console.log('LOCAL_DEBUG: ' + process.env.LOCAL_DEBUG);
   console.warn('Local debug mode!');
 
   readline.createInterface({
