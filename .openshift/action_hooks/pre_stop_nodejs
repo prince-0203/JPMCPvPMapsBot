@@ -27,3 +27,4 @@ if [ -f "$OPENSHIFT_REPO_DIR/.openshift/lib/utils" ]; then
    _SHOW_SETUP_PATH_MESSAGES="true" setup_path_for_custom_node_version
 fi
 
+forever stopall
