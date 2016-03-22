@@ -17,8 +17,6 @@ const botInfo = {
 
 const execCommand = require('./execCommand.js')(botInfo);
 
-console.log(process.env.LOCAL_DEBUG);
-
 if(process.env.LOCAL_DEBUG === '1') {
   console.warn('Local debug mode!');
 
@@ -51,13 +49,13 @@ if(process.env.LOCAL_DEBUG === '1') {
     stream.on('data', (tweet) => {
       const start = new Date();
 
-      if(tweet.user.id_str === botInfo.id) {
-        // 無限ループこわい
+      if(tweet.friends_str || tweet.event || tweet.warning) {
+        // ツイート以外が渡された
         return;
       }
 
-      if(tweet.friends_str || tweet.event || tweet.warning) {
-        // ツイート以外が渡された
+      if(tweet.user.id_str === botInfo.id) {
+        // 無限ループこわい
         return;
       }
 
