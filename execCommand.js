@@ -15,7 +15,8 @@ const command = {
   /* eslint global-require: 0 */
   exit: require('./command/exit'),
   rotation: require('./command/rotation'),
-  feedback: require('./command/feedback')
+  feedback: require('./command/feedback'),
+  kusoripu: require('./command/kusoripu')
 };
 
 module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) => {
@@ -23,7 +24,7 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // 引数一つ目が'@JPMCPvPMapsBot'でなかった(コマンドでなかった)
     return callback(null);
   }
-  console.log('Received: ' + args);
+  console.log(`Received from @${originalTweet.user.screen_name}: ` + args);
 
   args[1] = args[1].toLowerCase();
 
@@ -37,6 +38,9 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // Feedback
     case 'feedback':
       return command.feedback(args, client, originalTweet, callback);
+    // kusoripu
+    case 'kusoripu':
+      return command.kusoripu(args, client, originalTweet, callback);
     // ローテーション確認
     case 'rotation':
     case 'r':
