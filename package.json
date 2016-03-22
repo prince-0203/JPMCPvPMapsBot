@@ -6,7 +6,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "$(npm bin)/forever -m 5 -l \"../../logs/forever.log\" -a index.js"
+    "start": "forever -m 5 -l \"../../logs/forever.log\" -a index.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
     "npm": "^2.0.15"
   },
   "dependencies": {
-    "forever": "^0.15.1",
     "phantom": "^2.0.8",
     "request": "^2.69.0",
     "twitter": "^1.2.5"
