@@ -15,31 +15,58 @@ module.exports = (args, callback) => {
       timeout: 5000
     }, (err, res, body) => {
       if (!err && res.statusCode === 200) {
-        generateSVG(function(args) {
-          const rotation = args[0], backgroundImagePath = args[1];
+        generateSVG((args) => {
+          const server = args[0],
+                rotation =  args[1],
+                backgroundImagePath = args[2];
 
-          var draw = SVG('drawing');
+          const draw = SVG('drawing');
 
           // 背景
-          var backgroundImage = draw.image(backgroundImagePath);
+          const backgroundImage = draw.image(backgroundImagePath);
+
+          // タイトル
+          draw
+            .text('JPMCPvP ' + server + ' Server')
+            .attr({
+              x: 15,
+              y: -5,
+              fill: '#FF8E8E'
+            })
+            .font({
+              'size': 40
+            });
 
           // テキスト
-          var rotationText = draw
-            .text(rotation)
+          draw
+            .text((add) => {
+              rotation.forEach((val, i) => {
+                const tspan = add.tspan((i + 1) + '. ' + val).newLine();
+                if(i >= 8) {
+                  tspan.dx(i >= 9 ? 250 : 0);
+                }
+                if(i % 9 === 0) {
+                  tspan.attr('y', 50);
+                }
+              });
+            })
             .attr({
-              x: 0,
-              y: 20,
-              fill: 'black'
+              x: 50,
+              y: 50,
+              fill: '#D4F0FF'
+            })
+            .font({
+              'size': 25
             });
-          rotationText.attr('y', 20 - rotationText.bbox().y);
-          /*var textBBox = rotationText.bbox();
+          /*rotationText.attr('y', 20 - rotationText.bbox().y);
+          var textBBox = rotationText.bbox();
           draw.size(textBBox.width, textBBox.height);*/
 
-          backgroundImage.loaded(function(loader) {
+          backgroundImage.loaded((loader) => {
             draw.size(loader.width, loader.height);
             window.callPhantom({ width: draw.width(), height: draw.height() });
           });
-        }, [body, 'data:image/png;base64,' + fs.readFileSync('Asset/background01.png').toString('base64')], (png) => {
+        }, [args[2], body.split('\n').filter((val) => (val !== "")), 'data:image/png;base64,' + fs.readFileSync('Asset/background01.png').toString('base64')], (png) => {
           if(!png) {
             return callback('内部エラー: 画像を生成できませんでした。');
           } else {
