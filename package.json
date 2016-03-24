@@ -21,8 +21,13 @@
     "npm": "^2.0.15"
   },
   "dependencies": {
+    "node-notifier": "^4.5.0",
     "phantom": "^2.0.8",
     "request": "^2.69.0",
     "twitter": "^1.2.5"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.0.6"
   }
 }
