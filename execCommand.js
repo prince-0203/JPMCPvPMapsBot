@@ -24,7 +24,7 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // 引数一つ目が'@JPMCPvPMapsBot'でなかった(コマンドでなかった)
     return callback(null);
   }
-  console.log(`Received from @${originalTweet.user.screen_name}: ` + args);
+  console.log(`Received from @${originalTweet ? originalTweet.user.screen_name : ''}: ` + args);
 
   args[1] = args[1].toLowerCase();
 
