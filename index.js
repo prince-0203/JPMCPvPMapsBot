@@ -15,7 +15,7 @@ const botInfo = {
   screenName: process.env.BOT_SCREEN_NAME
 };
 
-const execCommand = require('./execCommand.js')(botInfo);
+const execCommand = require('./execCommand')(botInfo);
 
 if(process.env.OPENSHIFT_APP_NAME) {
   OpenShiftServer();

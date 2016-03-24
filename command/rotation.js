@@ -4,7 +4,7 @@
 
 const request = require('request'),
       fs = require('fs'),
-      generateSVG = require('../generateSVG.js');
+      generateSVG = require('../generateSVG');
 
 module.exports = (args, callback) => {
   if(!args[2]) {
