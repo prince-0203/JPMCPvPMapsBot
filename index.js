@@ -17,6 +17,10 @@ const botInfo = {
 
 const execCommand = require('./execCommand.js')(botInfo);
 
+if(process.env.OPENSHIFT_APP_NAME) {
+  OpenShiftServer();
+}
+
 if(process.env.LOCAL_DEBUG === '1') {
   console.warn('Local debug mode!');
 
@@ -35,8 +39,6 @@ if(process.env.LOCAL_DEBUG === '1') {
     });
   });
 } else {
-  OpenShiftServer();
-
   const client = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -76,7 +78,7 @@ if(process.env.LOCAL_DEBUG === '1') {
       };
 
       // 引数に分割してコマンドを実行
-      execCommand(tweet.text.split(' '), client, tweet, tweet.user.id_str === '4637307672', (text, mediaBuf, callback) => {
+      execCommand(tweet.text.split(' '), client, tweet, tweet.user.id_str === process.env.ADMIN_ID, (text, mediaBuf, callback) => {
         if(text) {
           if(mediaBuf) {
             // mediaをアップロードする場合
