@@ -11,22 +11,49 @@
 const phantom = require('phantom');
 
 module.exports = (evalFunction, arg, callback) => {
-  phantom.create().then((ph) => {
-    ph.createPage().then((page) => {
-      page.open('data:text/html,<html><body><div id="drawing"></div></body></html>').then(() => {
-        page.injectJs('./svg.js').then(() => {
-          page.evaluate(evalFunction, arg).then((data) => {
-            page.open('data:image/svg+xml,' + data[0]).then(() => {
-              page.property('viewportSize', data[1]).then(() => {
-                page.renderBase64('PNG').then((pngBase64) => {
-                  ph.exit();
-                  callback(new Buffer(pngBase64, 'base64'));
-                });
+  var sitepage = null;
+  var phInstance = null;
+  phantom.create()
+      .then((instance) => {
+        phInstance = instance;
+        return phInstance.createPage();
+      })
+      .then((page) => {
+        sitepage = page;
+        return sitepage.open('data:text/html,<html><body style="background-color: white; margin: 0"><div id="drawing"></div></body></html>');
+      })
+      .then(() => sitepage.injectJs('./svg.js'))
+      .then(() => sitepage.property('onCallback', function(size) {
+        SIZE = size;
+      }))
+      .then(() => sitepage.evaluate(evalFunction, arg))
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          (function checkForData() {
+            phInstance.windowProperty('SIZE')
+              .then(function(size) {
+                if(size !== undefined) {
+                  resolve(size);
+                } else {
+                  setTimeout(checkForData, 100);
+                }
+              })
+              .catch((err) => {
+                reject(err);
               });
-            });
-          });
+          })();
         });
+      })
+      .then((size) => {
+        return sitepage.property('viewportSize', size);
+      })
+      .then(() => sitepage.renderBase64('PNG'))
+      .then((pngBase64) => {
+        phInstance.exit();
+        callback(new Buffer(pngBase64, 'base64'));
+      })
+      .catch((err) => {
+        console.error(err);
+        phInstance.exit();
       });
-    });
-  });
 };
