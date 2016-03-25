@@ -36,7 +36,7 @@ rules:
   no-regex-spaces: 2
   no-sparse-arrays: 2
   no-unexpected-multiline: 2
-  no-unreachable: 2
+  no-unreachable: 1
   use-isnan: 2
   valid-jsdoc: 0
   valid-typeof: 2
@@ -87,7 +87,7 @@ rules:
   no-self-compare: 2
   no-sequences: 0
   no-throw-literal: 0
-  no-unused-expressions: 2
+  no-unused-expressions: 1
   no-useless-call: 2
   no-useless-concat: 2
   no-void: 2
