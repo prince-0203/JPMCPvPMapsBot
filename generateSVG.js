@@ -9,74 +9,80 @@
  */
 
 const phantom = require('phantom'),
-      babel = require("babel-core");  // PhantomJSでES6が動かないので、毎回ES5に変換する。多少パフォーマンスは落ちるけど気にしない。
+      fs = require("fs");
 
-module.exports = (evalFunction, args, callback) => {
-  var sitepage = null;
-  var phInstance = null;
-  phantom.create()
-      .then((instance) => {
-        phInstance = instance;
-        return phInstance.createPage();
-      })
-      .then((page) => {
-        sitepage = page;
-        return sitepage.open('data:text/html,<html><body style="background-color: white; margin: 0"><div id="drawing"></div></body></html>');
-      })
-      .then(() => sitepage.injectJs('./svg.js'))
-      .then(() => sitepage.property('onCallback', function(size) {
-        SIZE = size;
-      }))
-      .then(() => {
-        /*
-          実際には以下のようなコードが実行される。Babelを使用してES6のコードが使えるようにした結果こうなってしまった…全てはPhantomJSでES6が使えないのが悪い。
-          function() {
-            var __args = ["arg1", 5, true];  // argsをJSONに変換したもの。JSONなのでそのまま動く。
+var sitepage = null;
+var phInstance = null;
+phantom.create()
+  .then((instance) => {
+    phInstance = instance;
+    return phInstance.createPage();
+  })
+  .then((page) => {
+    sitepage = page;
+    return sitepage.open('data:text/html,<html><body style="background-color: white; margin: 0"><div id="drawing"></div></body></html>');
+  })
+  .then(() => sitepage.injectJs('./svg.js'))
+  .then(() => sitepage.property('onCallback', function(size) {
+    SIZE = size;
+  }))
+  .catch((err) => {
+    phInstance.exit();
+    throw err;
+  });
 
-            (function(args) {
-              //
-              // evalFunctionをBabelを使用してES5に変換したもの
-              //
-            })(__args);
-          }
-        */
-        const transformed = babel.transform(`(${evalFunction})(__args);`, {
-          presets: ['es2015'],
-          comments: false,
-          sourceMaps: false,
-          ast: false,
-          compact: false,
-          babelrc: false
-        }).code;
-        return sitepage.evaluateJavaScript(`function() { var __args = ${JSON.stringify(args)}; ${transformed} }`);
-      })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          (function checkForData() {
-            phInstance.windowProperty('SIZE')
-              .then(function(size) {
-                if(size !== undefined) {
-                  resolve(size);
-                } else {
-                  setTimeout(checkForData, 100);
-                }
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          })();
-        });
-      })
-      .then((size) => {
-        return sitepage.property('viewportSize', size);
-      })
-      .then(() => sitepage.renderBase64('PNG'))
-      .then((png) => {
-        phInstance.exit();
-        callback(png);
-      })
-      .catch((err) => {
-        console.error(err);
-        phInstance.exit();
+module.exports = (generatorPath, args, callback) => {
+  console.time('generateSVG - load generator');
+  new Promise((resolve, reject) => {
+    fs.readFile(generatorPath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  })
+    .then((generator) => {
+      console.timeEnd('generateSVG - load generator');
+      console.time('generateSVG - evaluateJavaScript');
+      return sitepage.evaluateJavaScript(`function() { ${generator}; generator(${JSON.stringify(args)}); }`);
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        (function checkForData() {
+          phInstance.windowProperty('SIZE')
+            .then(function(size) {
+              if(size !== undefined) {
+                resolve(size);
+              } else {
+                setTimeout(checkForData, 100);
+              }
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        })();
       });
+    })
+    .then((size) => {
+      console.timeEnd('generateSVG - evaluateJavaScript');
+      console.time('generateSVG - set viewportSize');
+      return sitepage.property('viewportSize', size);
+    })
+    .then(() => {
+      console.timeEnd('generateSVG - set viewportSize');
+      console.time('generateSVG - renderBase64');
+      return sitepage.renderBase64('PNG');
+    })
+    .then((png) => {
+      console.timeEnd('generateSVG - renderBase64');
+      sitepage.evaluate(function() {
+        document.getElementById('drawing').textContent = null;
+      });
+      callback(png);
+    })
+    .catch((err) => {
+      phInstance.exit();
+      throw err;
+    });
 };

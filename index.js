@@ -78,6 +78,7 @@ if(process.env.LOCAL_DEBUG === '1') {
       if(text) {
         if(mediaBase64) {
           // mediaをアップロードする場合
+          console.time('uploadMedia');
           twit.post('media/upload', { media: mediaBase64 }, function(err, media){
             var mediaIdString;
             if (err) {
@@ -86,6 +87,7 @@ if(process.env.LOCAL_DEBUG === '1') {
             } else {
               mediaIdString = media.media_id_string;
             }
+            console.timeEnd('uploadMedia');
             reply(text, mediaIdString, () => {
               if(callback) {
                 return callback();
