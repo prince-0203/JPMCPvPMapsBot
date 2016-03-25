@@ -71,9 +71,9 @@ module.exports = (evalFunction, args, callback) => {
         return sitepage.property('viewportSize', size);
       })
       .then(() => sitepage.renderBase64('PNG'))
-      .then((pngBase64) => {
+      .then((png) => {
         phInstance.exit();
-        callback(new Buffer(pngBase64, 'base64'));
+        callback(png);
       })
       .catch((err) => {
         console.error(err);
