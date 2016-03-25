@@ -29,7 +29,7 @@ mysqlConnection.connect((err) => {
   if (err) {
     throw err;
   }
-  console.log('Connected to MySQL: ' + connection.threadId);
+  console.log('Connected to MySQL: ' + mysqlConnection.threadId);
 });
 
 if(process.env.LOCAL_DEBUG === '1') {
