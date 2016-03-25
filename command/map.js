@@ -20,6 +20,9 @@ module.exports = (args, callback) => {
       }
     }, (err, res, accessToken) => {
       if (err || res.statusCode !== 200) {
+        if(err) {
+          console.log(err);
+        }
         return callback('内部エラー: JPMCPvP APIからアクセストークンを取得できませんでした。');
       } else {
         request.get({
