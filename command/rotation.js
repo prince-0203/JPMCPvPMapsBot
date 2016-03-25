@@ -14,7 +14,9 @@ module.exports = (args, callback) => {
       uri: `http://maps.minecraft.jp/production/rotations/${args[2]}.txt`,
       timeout: 5000
     }, (err, res, body) => {
-      if (!err && res.statusCode === 200) {
+      if (err || res.statusCode !== 200) {
+        return callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
+      } else {
         generateSVG((args) => {
           const server = args[0],
                 rotation =  args[1],
@@ -73,8 +75,6 @@ module.exports = (args, callback) => {
             return callback(args[2] + 'のローテーションです。', png);
           }
         });
-      } else {
-        return callback('内部エラー: maps.minecraft.jpからローテーションを取得できませんでした。');
       }
     });
   }
