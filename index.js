@@ -8,7 +8,8 @@ console.log('App starts!');
 const Twit = require('twit'),
       OpenShiftServer = require('./OpenShiftServer'),
       fs = require('fs'),
-      readline = require('readline');
+      readline = require('readline'),
+      request = require('request');
 
 const botInfo = {
   id: process.env.BOT_ID,
@@ -102,6 +103,51 @@ if(process.env.LOCAL_DEBUG === '1') {
             }
           });
         }
+      }
+    });
+  });
+
+  stream.on('direct_message', function(data) {
+    const message = data.direct_message;
+
+    console.log(`Received direct message from @${message.sender.screen_name}: ${message.text}`);
+
+    if(message.sender.id_str === botInfo.id) {
+      // 無限ループこわい
+      return;
+    }
+
+    request.post({
+      uri: 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue',
+      timeout: 5000,
+      json: true,
+      qs: {
+        APIKEY: process.env.DOCOMO_API_KEY
+      },
+      body: {
+        utt: message.text,
+        nickname: message.sender.name
+      }
+    }, (err, res, dialogue) => {
+      if(err || res.statusCode !== 200) {
+        if(err) {
+          console.error(err);
+        }
+        twit.post('direct_messages/new', {
+          user_id: message.sender.id_str,
+          text: '内部エラー: 雑談対話APIからデータを取得できませんでした。'
+        });
+      } else {
+        twit.post('direct_messages/new', {
+          user_id: message.sender.id_str,
+          text: dialogue.utt
+        }, (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(`Replied direct message: ${dialogue.utt}`);
+          }
+        });
       }
     });
   });
