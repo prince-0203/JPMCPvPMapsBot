@@ -9,7 +9,8 @@ const Twit = require('twit'),
       OpenShiftServer = require('./OpenShiftServer'),
       fs = require('fs'),
       readline = require('readline'),
-      request = require('request');
+      request = require('request'),
+      mysql = require('mysql');
 
 const botInfo = {
   id: process.env.BOT_ID,
@@ -21,6 +22,15 @@ const execCommand = require('./execCommand')(botInfo);
 if(process.env.OPENSHIFT_APP_NAME) {
   OpenShiftServer();
 }
+
+const mysqlConnection = mysql.createConnection(process.env.OPENSHIFT_MYSQL_DB_URL);
+
+mysqlConnection.connect((err) => {
+  if (err) {
+    throw err;
+  }
+  console.log('Connected to MySQL: ' + connection.threadId);
+});
 
 if(process.env.LOCAL_DEBUG === '1') {
   console.warn('Local debug mode!');
