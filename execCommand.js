@@ -14,9 +14,10 @@
 const command = {
   /* eslint global-require: 0 */
   exit: require('./command/exit'),
-  rotation: require('./command/rotation'),
   feedback: require('./command/feedback'),
-  kusoripu: require('./command/kusoripu')
+  kusoripu: require('./command/kusoripu'),
+  rotation: require('./command/rotation'),
+  map: require('./command/map')
 };
 
 module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) => {
@@ -41,10 +42,13 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // kusoripu
     case 'kusoripu':
       return command.kusoripu(args, client, originalTweet, callback);
-    // ローテーション確認
+    // ローテーション
     case 'rotation':
     case 'r':
       return command.rotation(args, callback);
+    // マップ情報
+    case 'map':
+      return command.map(args, callback);
     // コマンドが存在しない
     default:
       return callback('エラー: コマンドが見つかりませんでした。');
