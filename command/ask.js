@@ -35,7 +35,7 @@ module.exports = (args, callback) => {
           } else {
             var answers = '';
             answer.answers.forEach((val) => {
-              answers += `${val.rank}. ${val.answerText}(${val.linkUrl})\n`;
+              answers += `${val.rank}. ${val.answerText}(${encodeURI(val.linkUrl)})\n`;
             });
 
             request.post({
@@ -51,7 +51,7 @@ module.exports = (args, callback) => {
                 }
                 return callback('内部エラー: 回答を送信できませんでした。');
               } else {
-                return callback(`${answer.message.textForDisplay}\n(出典: ${answer.answers[0].linkUrl})\nhttps://paste.minecraft.jp/${JSON.parse(key).key}.txt`);
+                return callback(`${answer.message.textForDisplay}\n(出典: ${encodeURI(answer.answers[0].linkUrl)})\nhttps://paste.minecraft.jp/${JSON.parse(key).key}.txt`);
               }
             });
           }
