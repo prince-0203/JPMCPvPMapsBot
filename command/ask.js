@@ -31,7 +31,7 @@ module.exports = (args, callback) => {
           return callback('内部エラー: 知識Q&A API内部でエラーが発生しました。');
         default:
           if(answer.code.substr(0, 1) === 'E') {
-            return callback('内部エラー: 知識Q&A APIで不明なエラーが発生しました。');
+            return callback(`内部エラー: 知識Q&A APIで不明なエラー(${answer.code})が発生しました。`);
           } else {
             var answers = '';
             answer.answers.forEach((val) => {
@@ -51,7 +51,7 @@ module.exports = (args, callback) => {
                 }
                 return callback('内部エラー: 回答を送信できませんでした。');
               } else {
-                return callback(`${answer.message.textForDisplay}\n(出典: ${encodeURI(answer.answers[0].linkUrl)})\nhttps://paste.minecraft.jp/${JSON.parse(key).key}.txt`);
+                return callback(`${answer.message.textForDisplay}(${answer.code})\n(出典: ${encodeURI(answer.answers[0].linkUrl)})\nhttps://paste.minecraft.jp/${JSON.parse(key).key}.txt`);
               }
             });
           }
