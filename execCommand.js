@@ -17,7 +17,8 @@ const command = {
   feedback: require('./command/feedback'),
   kusoripu: require('./command/kusoripu'),
   rotation: require('./command/rotation'),
-  map: require('./command/map')
+  map: require('./command/map'),
+  recognize: require('./command/recognize')
 };
 
 module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) => {
@@ -49,6 +50,8 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // マップ情報
     case 'map':
       return command.map(args, callback);
+    case 'recognize':
+      return command.recognize(args, originalTweet, callback)
     // コマンドが存在しない
     default:
       return callback('エラー: コマンドが見つかりませんでした。');
