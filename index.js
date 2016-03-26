@@ -23,7 +23,7 @@ if(process.env.OPENSHIFT_APP_NAME) {
   OpenShiftServer();
 }
 
-const mysqlPool = mysql.createPool(process.env.OPENSHIFT_MYSQL_DB_URL + '/');
+const mysqlPool = mysql.createPool(process.env.OPENSHIFT_MYSQL_DB_URL);
 mysqlPool.query('USE jpmcpvpmapsbot');
 
 if(process.env.LOCAL_DEBUG === '1') {
