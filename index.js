@@ -38,10 +38,10 @@ if(process.env.LOCAL_DEBUG === '1') {
     input: process.stdin,
     output: process.stdout
   }).on('line', function (line) {
-    execCommand(('@JPMCPvPMapsBot ' + line).split(' '), null, null, true, (text, mediaBuf, callback) => {
+    execCommand(('@JPMCPvPMapsBot ' + line).split(' '), null, null, true, (text, mediaBase64, callback) => {
       console.log('Result: ' + text);
-      if(mediaBuf) {
-        fs.writeFile('temp.png', mediaBuf);
+      if(mediaBase64) {
+        fs.writeFile('temp.png', new Buffer(mediaBase64, 'base64'));
       }
       if(callback) {
         return callback();
