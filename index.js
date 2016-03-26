@@ -23,8 +23,13 @@ if(process.env.OPENSHIFT_APP_NAME) {
   OpenShiftServer();
 }
 
-const mysqlPool = mysql.createPool(process.env.OPENSHIFT_MYSQL_DB_URL);
-mysqlPool.query('USE jpmcpvpmapsbot');
+const mysqlPool = mysql.createPool({
+  host: process.env.OPENSHIFT_MYSQL_DB_HOST,
+  port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+  database: 'jpmcpvpmapsbot',
+  user: process.env.OPENSHIFT_MYSQL_DB_USERNAME,
+  password: process.env.OPENSHIFT_MYSQL_DB_PASSWORD
+});
 
 if(process.env.LOCAL_DEBUG === '1') {
   console.warn('Local debug mode!');
