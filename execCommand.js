@@ -13,6 +13,7 @@
 
 const command = {
   /* eslint global-require: 0 */
+  about: require('./command/about'),
   feedback: require('./command/feedback'),
   kusoripu: require('./command/kusoripu'),
   rotation: require('./command/rotation'),
@@ -34,6 +35,9 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // 生存確認
     case 'おーい':
       return callback('Botは稼働中です!');
+    // About
+    case 'about':
+      return command.about(callback);
     // Feedback
     case 'feedback':
       return command.feedback(args, client, originalTweet, callback);
