@@ -32,7 +32,6 @@ phantom.create()
   });
 
 module.exports = (generatorPath, args, callback) => {
-  console.time('generateSVG - load generator');
   new Promise((resolve, reject) => {
     fs.readFile(generatorPath, (err, data) => {
       if (err) {
@@ -43,8 +42,6 @@ module.exports = (generatorPath, args, callback) => {
     });
   })
     .then((generator) => {
-      console.timeEnd('generateSVG - load generator');
-      console.time('generateSVG - evaluateJavaScript');
       return sitepage.evaluateJavaScript(`function() { ${generator}; generator(${JSON.stringify(args)}); }`);
     })
     .then(() => {
@@ -65,17 +62,12 @@ module.exports = (generatorPath, args, callback) => {
       });
     })
     .then((size) => {
-      console.timeEnd('generateSVG - evaluateJavaScript');
-      console.time('generateSVG - set viewportSize');
       return sitepage.property('viewportSize', size);
     })
     .then(() => {
-      console.timeEnd('generateSVG - set viewportSize');
-      console.time('generateSVG - renderBase64');
       return sitepage.renderBase64('PNG');
     })
     .then((png) => {
-      console.timeEnd('generateSVG - renderBase64');
       sitepage.evaluate(function() {
         document.getElementById('drawing').textContent = null;
       });
