@@ -147,7 +147,6 @@ if(process.env.LOCAL_DEBUG === '1') {
     };
 
     getUserData((context, mode) => {
-      console.log(context, mode);
       request.post({
         uri: 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue',
         timeout: 5000,
@@ -169,6 +168,12 @@ if(process.env.LOCAL_DEBUG === '1') {
           twit.post('direct_messages/new', {
             user_id: message.sender.id_str,
             text: '内部エラー: 雑談対話APIからデータを取得できませんでした。'
+          }, (err) => {
+            if (err) {
+              console.error(err);
+            } else {
+              console.log(`Replied direct message: ${dialog.utt}(Context: ${dialog.context}, Mode: ${dialog.mode})`);
+            }
           });
         } else {
           // データをDBに保存(非同期)
