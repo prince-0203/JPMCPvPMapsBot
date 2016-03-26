@@ -24,14 +24,14 @@ var generator = function generator(args) {
     rotation.forEach(function (val, i) {
       var tspan = add.tspan(i + 1 + '. ' + val).newLine();
       if (i >= 8) {
-        tspan.dx(i >= 9 ? 250 : 0);
+        tspan.dx(i >= 9 ? 260 : 0);
       }
       if (i % 9 === 0) {
-        tspan.attr('y', 50);
+        tspan.attr('y', 60);
       }
     });
   }).attr({
-    x: 50,
+    x: 40,
     y: 50,
     fill: '#D4F0FF'
   }).font({
