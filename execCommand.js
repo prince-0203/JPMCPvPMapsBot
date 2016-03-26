@@ -18,7 +18,8 @@ const command = {
   kusoripu: require('./command/kusoripu'),
   rotation: require('./command/rotation'),
   map: require('./command/map'),
-  recognize: require('./command/recognize')
+  recognize: require('./command/recognize'),
+  ask: require('./command/ask')
 };
 
 module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) => {
@@ -50,8 +51,12 @@ module.exports = (botInfo) => (args, client, originalTweet, isAdmin, callback) =
     // マップ情報
     case 'map':
       return command.map(args, callback);
+    // 画像認識(商品認識)
     case 'recognize':
-      return command.recognize(args, originalTweet, callback)
+      return command.recognize(args, originalTweet, callback);
+    // 知識Q&A
+    case 'ask':
+      return command.ask(args, callback);
     // コマンドが存在しない
     default:
       return callback('エラー: コマンドが見つかりませんでした。');
