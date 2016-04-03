@@ -21,9 +21,11 @@ module.exports = (args, callback) => {
     }, (err, res, accessToken) => {
       if (err || res.statusCode !== 200) {
         if(err) {
-          console.log(err);
+          console.error(err);
+        } else {
+          console.error(accessToken);
         }
-        return callback('内部エラー: JPMCPvP APIからアクセストークンを取得できませんでした。');
+        return callback(`内部エラー: JPMCPvP APIからアクセストークンを取得できませんでした。(HTTP ${res.statusCode})`);
       } else {
         request.get({
           uri: encodeURI('https://pvp-api.minecraft.jp/v1/maps/' + args.slice(2).join(' ')),
@@ -34,11 +36,13 @@ module.exports = (args, callback) => {
           }
         }, (err, res, map) => {
           if (err || res.statusCode !== 200) {
-            if(res.statusCode === 404) {
-              return callback('指定されたマップが見つかりませんでした。');
-            } else {
+            if(err) {
               console.error(err);
-              return callback('内部エラー: JPMCPvP APIからマップ情報を取得できませんでした。');
+              return callback('内部エラー: JPMCPvP APIからマップ情報を取得できませんでした。(通信エラー)');
+            } else if(res.statusCode === 404) {
+              return callback('指定されたマップが見つかりませんでした。(HTTP 404)');
+            } else {
+              return callback(`内部エラー: JPMCPvP APIからマップ情報を取得できませんでした。(HTTP ${res.statusCode})`);
             }
           } else {
             return callback(map.name + ' Type: ' + map.type + '\nID: ' + map.id);
