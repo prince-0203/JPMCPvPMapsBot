@@ -72,7 +72,7 @@ if(process.env.LOCAL_DEBUG === '1') {
         status: `@${tweet.user.screen_name} ${text}\n(${new Date().getTime() - start.getTime()}ms)`,
         in_reply_to_status_id: tweet.id_str,
         media_ids: mediaId ? [mediaId] : undefined
-      }, (err) =>{
+      }, (err) => {
         if (err) {
           console.error(err);
         } else {
