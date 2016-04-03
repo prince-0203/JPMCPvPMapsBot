@@ -22,4 +22,5 @@ ratings:
   - "**.py"
   - "**.rb"
 exclude_paths:
-  - "svg.js"
+  - "./svg.js"
+  - "./command/generateSVG/dest/**/*"
