@@ -1,2 +1,0 @@
-#!/bin/bash
-curl http://$OPENSHIFT_NODEJS_IP:$OPENSHIFT_NODEJS_PORT --verbose >> $OPENSHIFT_LOG_DIR/work.log
