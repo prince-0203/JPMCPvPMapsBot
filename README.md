@@ -6,8 +6,8 @@
 [JPMCPvP Maps Bot(@JPMCPvPMapsBot)さん | Twitter](https://twitter.com/JPMCPvPMapsBot)  
 Botの使い方は[こちら](https://prince-0203.github.io/JPMCPvPMapsBot/)
 
-## Run
-### 1. [Twitter Application Management](https://apps.twitter.com/)でアプリケーションを作成し、環境変数に以下の値を設定します。
+## メモ
+### 1. 環境変数に以下の値を設定して
 
 | 変数名                      | 値                                                                             |
 |-----------------------------|--------------------------------------------------------------------------------|
@@ -27,7 +27,7 @@ Botの使い方は[こちら](https://prince-0203.github.io/JPMCPvPMapsBot/)
 | OPENSHIFT_MYSQL_DB_USERNAME | MySQL DB User                                                                  |
 | OPENSHIFT_MYSQL_DB_PASSWORD | MySQL DB Password                                                              |
 
-### 2. 実行します。
+### 2. 実行
 
 ```shell
 npm install
