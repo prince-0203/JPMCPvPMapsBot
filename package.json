@@ -18,13 +18,13 @@
   },
   "homepage": "https://github.com/prince-0203/JPMCPvPMapsBot#readme",
   "engines": {
-    "node": "^4.4.1",
-    "npm": "^2.15.0"
+    "node": "4.4.3",
+    "npm": "2.15.1"
   },
   "dependencies": {
     "mysql": "^2.10.2",
     "phantom": "^2.0.10",
-    "request": "^2.69.0",
+    "request": "^2.71.0",
     "twit": "^2.2.3"
   },
   "devDependencies": {
