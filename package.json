@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "mysql": "^2.11.1",
-    "phantom": "^2.1.9",
+    "phantom": "^2.1.13",
     "request": "^2.71.0",
     "twit": "^2.2.3"
   },
